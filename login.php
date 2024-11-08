@@ -17,6 +17,8 @@
         <input type="password" id="password" name="password" required><br><br>
         <button type="submit">Login</button>
     </form>
+
+    <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -20,26 +20,43 @@ try {
         $password = $conn->real_escape_string($data->password);
 
         // Query the database
-        $sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+        $sql = "SELECT * FROM `login` WHERE username = '$email' LIMIT 1";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
-            if (password_verify($password, $user['password'])) {
-                echo json_encode(["status" => 200, "message" => "Login successful"]);
+            // if (password_verify($password, $user['password'])) {
+            if ($password = $user['password']) {
+                echo json_encode([
+                    "status" => 200,
+                    "message" =>
+                        "Login successful"
+                ]);
             } else {
-                echo json_encode(["status" => 401, "message" => "Invalid Password"]);
+                echo json_encode([
+                    "status" => 401,
+                    "message" =>
+                        "Invalid Password"
+                ]);
             }
         } else {
-            echo json_encode(["status" => 404, "message" => "User not found"]);
+            echo json_encode([
+                "status" => 404,
+                "message" =>
+                    "User not found"
+            ]);
         }
 
         // Close the connection
         $conn->close();
 
     } else {
-        echo json_encode(["status" => 400, "message" => "Invalid input. Required fields are missing."]);
+        echo json_encode([
+            "status" => 400,
+            "message" =>
+                "Invalid input. Required fields are missing."
+        ]);
     }
 
 } catch (Exception $e) {
