@@ -76,3 +76,38 @@ function userLogin(){
     // Send the form data as a JSON string
     xhr.send(JSON.stringify(formData));
 }
+
+function registerProduct(){
+    const form = document.getElementById('productForm');
+
+    const formData = {
+        product_name: form.product_name.value,
+        product_code: form.product_code.value,
+        manufacturer: form.manufacturer.value,
+        category: form.category.value,
+        price: form.price.value,
+        stock_quantity: form.stock_quantity.value
+    };
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST","controllers/Product_Reg_Controller.php",true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+            try{
+                const response = JSON.parse(xhr.responseText);
+                alert(response.message);
+                if(response.status === 200){
+                    window.location.href = "./index.php";
+                }
+            }catch(error){
+                console.error("Error parsing response:",error);
+                console.error("Raw response:",xhr.responseText);
+                alert("An error occurred. Please try again.");
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify(formData));
+}
