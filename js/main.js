@@ -40,3 +40,39 @@ function userReg() {
     // Send the form data as a JSON string
     xhr.send(JSON.stringify(formData));
 }
+
+function userLogin(){
+    // Get the form data
+    const form = document.getElementById('loginForm');
+    const formData = {
+        email: form.email.value,
+        password: form.password.value
+    };
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST","controllers/User_Login_Controller.php",true);
+    xhr.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+
+    // Define a function to handle the server response
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+            // Parse and handle the JSON response
+            try{
+                const response = JSON.parse(xhr.responseText);
+                alert(response.message);
+                if(response.status === 200){
+                    // Redirect if login is successful
+                    window.location.href = "./index.php";
+                }
+            }catch(error){
+                // Log and display any errors during JSON parsing
+                console.error("Error parsing response:",error);
+                console.error("Raw response:",xhr.responseText);
+                alert("An error occurred. Please try again.");
+            }
+        }
+    }
+
+    // Send the form data as a JSON string
+    xhr.send(JSON.stringify(formData));
+}
